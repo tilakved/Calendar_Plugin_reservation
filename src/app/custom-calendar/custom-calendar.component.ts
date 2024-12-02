@@ -113,7 +113,7 @@ export class ChunkPipe implements PipeTransform {
       <div>
         <div class="w100 flex" *ngFor="let row of calendar | chunk: firstDayOfWeek; let i = index">
           <div class="singleBlock flex align-center justify-center" *ngFor="let c of row; let j = index">
-            <div class="w100 block" (click)="dateClickButton(c)"
+            <div class="w100 block" (click)="dateClickButton(c)" (mouseover)="over(c)"
                  [ngClass]="{'past-date disabled-date': c?.isPastDate, 'today': c?.isToday , 'selected': c?.selected ,  'disabled-date':c?.disable}">
               <p *ngIf="c">
                 {{c.date.getDate()}}
@@ -167,6 +167,7 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
   @Input() firstDayOfWeek: number = 0;
   @Output() monthChangeEvent = new EventEmitter();
   @Output() dateClick = new EventEmitter();
+  @Output() dateMouseOver = new EventEmitter();
   newWeekDays1: any = [];
   newWeekDays2: any = [];
   monthListOpen: boolean = false;
@@ -377,5 +378,9 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
     for (let i = 0; i < this.allMonths.length; i++) {
       this.allMonths[i].month_disable = (i < this.currentMonth) && (this.selectedYear == this.currentYear);
     }
+  }
+
+  over(c:any) {
+    this.dateMouseOver.emit(c)
   }
 }
